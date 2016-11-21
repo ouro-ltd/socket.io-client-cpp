@@ -23,6 +23,7 @@ set(Boost_DETAILED_FAILURE_MSG ON)
 set(Boost_USE_MULTITHREADED ON) 
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_USE_STATIC_LIBS ON)
+
 find_package(Boost ${BOOST_VER} REQUIRED COMPONENTS system date_time random) 
 
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src ALL_SRC)
@@ -72,6 +73,11 @@ set_target_properties(sioclient_tls
 endif()
 list(APPEND TARGET_LIBRARIES sioclient_tls)
 
+endif()
+
+if(MSVC)
+  target_compile_options(sioclient PUBLIC $<$<CONFIG:Debug>:/MTd>)
+  target_compile_options(sioclient PUBLIC $<$<CONFIG:Release>:/MT>)
 endif()
 
 install(FILES ${ALL_HEADERS} 
